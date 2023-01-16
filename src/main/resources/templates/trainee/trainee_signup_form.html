@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Sign Up - Member</title>
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+	<script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+
+	<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+	<link rel="icon" type="image/ico" th:href="@{../../static/zingymfavicon.ico}">
+
+	<link rel="stylesheet" th:href="@{/css/signup.css}"/>
+</head>
+<body>
+<div id="div1" class="container">
+
+	<div class="left">
+
+		<button onclick="history.back()" class="back_button" style='font-size:18px'><i class='far fa-arrow-alt-circle-left'></i></button>
+
+	</div>
+	<div>
+		<h1 class="trainersigntext">Member Registration - Sign Up</h1>
+	</div>
+	<form th:action="@{/trainee_process_register}" th:object="${trainee}"
+		  method="post" style="max-width: 600px; margin: 0 auto;">
+		<div class="m-3">
+			<div class="form-group row">
+				<label class="col-4 col-form-label">E-mail: </label>
+				<div class="col-8">
+					<input type="email" th:field="*{email}" class="form-control" required />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-4 col-form-label">Password: </label>
+				<div class="col-8">
+					<input type="password" th:field="*{password}" class="form-control"
+						   required minlength="4" maxlength="50"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-4 col-form-label">First Name: </label>
+				<div class="col-8">
+					<input type="text" th:field="*{firstName}" class="form-control"
+						   required minlength="2" maxlength="20"/>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-4 col-form-label">Last Name: </label>
+				<div class="col-8">
+					<input type="text" th:field="*{lastName}" class="form-control"
+						   required minlength="2" maxlength="20" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label  class="col-4 col-form-label">Phone: </label>
+				<div class="col-8">
+					<input type="number" th:field="*{phoneNumber}"  class="form-control"
+						   required minlength="2" maxlength="20" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label  class="col-4 col-form-label">Gender: </label>
+				<form class="form-group row">
+					<div class="col-8">
+						<input id="male" type="radio" name="gender" th:field="*{gender}" value="Male"/>
+						<label for="male">Male</label>
+						<input id="female" type="radio" name="gender" th:field="*{gender}" value="Female"/>
+						<label for="female">Female</label>
+					</div>
+				</form>
+			</div>
+			<br>
+			<div class="form-group row">
+				<label  class="col-4 col-form-label">Experience Level: </label>
+				<div class="col-8">
+					<input type="radio" id="c1" name="novice" th:field="*{experienceLevel}" value="Novice">
+					<label for="c1">Novice</label><br>
+					<input type="radio" id="c2" name="intermediate" th:field="*{experienceLevel}" value="Intermediate">
+					<label for="c2">Intermediate</label><br>
+					<input type="radio" id="c3" name="advanced" th:field="*{experienceLevel}" value="Advanced">
+					<label for="c3">Advanced</label>
+				</div>
+			</div>
+			<br>
+			<div class="form-group row">
+				<label  class="col-4 col-form-label">Preferred Training<br> Styles: </label>
+				<div class="col-8">
+					<input type="checkbox" id="b1" name="bootcamp" th:field="*{trainingStyle}" value="Boot Camp">
+					<label for="b1">Boot Camp</label><br>
+					<input type="checkbox" id="b2" name="motivational" th:field="*{trainingStyle}" value="Motivational">
+					<label for="b2">Motivational</label><br>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label  class="col-4 col-form-label">Preferred Training<br> Activities: </label>
+				<div class="col-8">
+					<input type="checkbox" id="v1" name="swimming" th:field="*{trainingActivity}" value="Swimming">
+					<label for="v1">Swimming</label><br>
+					<input type="checkbox" id="v2" name="weight" th:field="*{trainingActivity}" value="Weight Training">
+					<label for="v2">Weight Training</label><br>
+					<input type="checkbox" id="v3" name="aerobics" th:field="*{trainingActivity}" value="Aerobics">
+					<label for="v3">Aerobics</label>
+				</div>
+			</div>
+
+			<div>
+				<button type="submit" class="btn2">Sign Up</button>
+			</div>
+			<br>
+			<div>
+				<button type="reset" class="btn2">Cancel</button>
+			</div>
+		</div>
+	</form>
+
+</div>
+
+<script>
+	const togglePassword = document.querySelector("#togglePassword");
+	const password = document.querySelector("#password");
+
+	togglePassword.addEventListener("click", function () {
+		// toggle the type attribute
+		const type = password.getAttribute("type") === "password" ? "text" : "password";
+		password.setAttribute("type", type);
+
+		// toggle the icon
+		this.classList.toggle("bi-eye");
+	});
+</script>
+
+<div class="toast">Signed Up Successfully</div>
+<script src="../toast/main.js">
+</script>
+
+<div id="div2">
+
+</div>
+</body>
+</html>

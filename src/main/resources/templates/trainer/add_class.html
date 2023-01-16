@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>ADD CLASS</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <link rel="icon" type="image/ico" th:href="@{../../static/zingymfavicon.ico}">
+
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+    <link rel="stylesheet" th:href="@{/css/signup.css}"/>
+</head>
+<body>
+<script>
+    $(document).ready(function(){
+        const div = document.getElementById("alert_wrapf");
+        if (div.style.display === "" && div.textContent.includes("Class Name Already Exists")) {
+            div.style.display = "block";
+        }
+        else if (div.textContent.includes("")) {
+            div.style.display = "none";
+        }
+    });
+</script>
+<div id="alert_wrapf" class="alert_wrapf" th:text="${message}"></div>
+<div id="div1" class="container">
+
+    <div class="left">
+
+        <button onclick="history.back()" class="back_button" style='font-size:18px'><i class='far fa-arrow-alt-circle-left'></i></button>
+
+    </div>
+
+    <div>
+        <h1 class="trainersigntext">NEW CLASS</h1>
+    </div>
+    <form th:action="@{/trainer/addd_class}" th:object="${classes}"
+          method="post" style="max-width: 600px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Class Name: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{className}" name="className" class="form-control" required />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Trainer Name: </label>
+                <div class="col-8">
+                    <input type="text" class="form-control" id="firstName" name="firstName" th:value="${fullname}" readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Description: </label>
+                <div class="col-8">
+                    <input type="text" th:field="*{description}" class="form-control"
+                           required minlength="6" maxlength="100"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Day: </label>
+                <div class="col-8">
+                    <input type="date" th:field="*{date}" class="form-control"
+                           required minlength="2" maxlength="20"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Starting Time: </label>
+                <div class="col-8">
+                    <input type="time" th:field="*{startTime}" class="form-control"
+                           required minlength="2" maxlength="20" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label  class="col-4 col-form-label">End Time: </label>
+                <div class="col-8">
+                    <input type="time" th:field="*{endTime}"  class="form-control"
+                           required minlength="2" maxlength="20" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label  class="col-4 col-form-label">Class Activity: </label>
+                <div class="col-8">
+                    <select th:field="*{classActivity}">
+                        <option th:each="activity: ${listActivities}" th:text="${activity.activityName}" th:value="${activity.activityName}" ></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label  class="col-4 col-form-label">Class Type: </label>
+                <div class="col-8">
+                    <input type="radio" id="m1" name="individual" th:field="*{classType}" value="Individual">
+                    <label for="m1">Individual</label><br>
+                    <input type="radio" id="m2" name="group" th:field="*{classType}" value="Group">
+                    <label for="m2">Group</label><br>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Trainer Style: </label>
+                <div class="col-8">
+                    <input type="radio" id="b1" name="bootcamp" th:field="*{trainerStyle}" value="Boot Camp">
+                    <label for="b1">Boot Camp</label><br>
+                    <input type="radio" id="b2" name="motivational" th:field="*{trainerStyle}" value="Motivational">
+                    <label for="b2">Motivational</label><br>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Number of Spots: </label>
+                <div class="col-8">
+                    <input type="number" th:field="*{numberOfSpots}" class="form-control"
+                           required minlength="1" maxlength="20" />
+                </div>
+            </div>
+            <div>
+                <button type="submit" class="btn2">Add Class</button>
+            </div>
+            <br>
+            <div>
+                <button type="reset" class="btn2">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="div2">
+
+</div>
+</body>
+</html>

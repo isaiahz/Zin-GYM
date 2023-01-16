@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Zin Gym</title>
+  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+
+  <link rel="icon" type="image/ico" th:href="@{../../static/zingymfavicon.ico}">
+
+</head>
+
+
+<body>
+
+<header>
+  <div class="mid">
+    <ul class="navbar">
+      <li> <a href="#" class="active">Home</a></li>
+      <li> <a href="#">About</a></li>
+      <li> <a href="#">Service</a></li>
+    </ul>
+  </div>
+  <div class="right">
+
+    <a th:href="@{/trainee_signup}"><button class="btn">Member Signup</button></a>
+    <a th:href="@{/admin/login}"><button class="btn">Admin Login</button></a>
+  </div>
+
+  <script>
+    $(document).ready(function(){
+        const div = document.getElementById("alert_wrap");
+        if (div.style.display === "" && div.textContent.includes("Successfully Registered, Please Login...")
+                || div.textContent.includes("Account Deleted Successfully...")
+                || div.textContent.includes("You have successfully logged out...")) {
+          div.style.display = "block";
+        }
+        else if (div.textContent.includes("")) {
+          div.style.display = "none";
+        }
+      });
+    </script>
+</header>
+
+<div id="alert_wrap" class="alert_wrap" th:text="${message}"></div>
+
+<div id="alert_logout" class="alert_logout" th:if="${#strings.toString(param.logout)} == ''" >Logged Out Successfully...</div>
+
+
+<div class="container">
+  <h1>Zin Gym</h1>
+  <h2>Stay Fit Stay Healthy !!!!</h2>
+  <br>
+
+
+  <div>
+    <div class="memberLogin"> <h2 style="color:#EC5800"> Member Login </h2> </div>
+    <form th:action="@{/trainee/login}" th:object="${trainee}"
+          method="post">
+
+
+      <div id="errorText" th:if="${#strings.toString(param.error)} == 'disabled'" class="alert alert-error">Account is Disabled<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Contact Admin</div>
+        <div id="errorTex" th:if="${#strings.toString(param.error)} == 'invalid'" class="alert alert-error">Invalid Username or Password</div>
+
+      <div class="form-group">
+        <input style="height:60px" type="email" th:field="*{email}" name="email" required placeholder="Email" />
+      </div>
+      <div class="form-group">
+        <input style="height:60px" type="password" name="password" th:field="*{password}"
+               required minlength="4" maxlength="50" placeholder="Password"/>
+        <i class="bi bi-eye-slash" id="togglePassword"></i>
+      </div>
+      <div>
+        <button type="submit" class="btn1" >Login</button>
+      </div>
+    </form>
+    <br>
+    <div>
+      <a class="login_word" th:href="@{/trainer/login}"><u>Trainer? Login Here</u></a>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  const togglePassword = document.querySelector("#togglePassword");
+  const password = document.querySelector("#password");
+
+  togglePassword.addEventListener("click", function () {
+    // toggle the type attribute
+    const type = password.getAttribute("type") === "password" ? "text" : "password";
+    password.setAttribute("type", type);
+
+    // toggle the icon
+    this.classList.toggle("bi-eye");
+  });
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Are You sure?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary">Yes Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+
+  function checkEmail (form) {
+
+   id = $("#id").val();
+    email = $("#email").val();
+
+    $.ajax({
+      url: "/checkEmail",
+      type: "POST",
+      data: {
+        id: id,
+        email: email
+      },
+      success: function (response) {
+        if (response === "OK") {
+          form.submit();
+        } else {
+          alert("Email already exists");
+        }
+      },
+      error: function (e) {
+        alert("Error!")
+        console.log("ERROR: ", e);
+      }
+    });
+  }
+</script>
+
+
+</body>
+</html>

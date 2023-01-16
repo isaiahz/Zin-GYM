@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Member Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style2.css}"/>
+
+    <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="icon" type="image/ico" th:href="@{../../static/zingymfavicon.ico}">
+
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+</head>
+
+
+<body>
+
+<header>
+    <div class="mid">
+        <ul class="navbar">
+            <li> <a href="#trainee-class-section" class="active">CLASSES</a></li>
+            <li> <a href="#trainer-class-section">TRAINERS</a></li>
+            <li> <a href="#bookclass-class-section">MY BOOKINGS</a></li>
+        </ul>
+    </div>
+
+    <div class="left">
+        <p>
+            Welcome <b>[[${#request.userPrincipal.principal.fullName}]]</b>
+            <span sec:authentication="principal.authorities"></span>
+        </p>
+    </div>
+
+    <div class="right">
+            <form th:action="@{/trainee/logout}" method="post">
+                <a ><button type="submit" class="btn4">LOGOUT</button></a>
+            </form>
+    </div>
+
+    <div class="right2">
+        <a th:href="@{/trainee/view_profile_trainee}"><button class="btn4"><i class='fas fa-user-alt' style='font-size:20px'></i>
+        </button></a>
+
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            const div = document.getElementById("alert_wrapf");
+            if (div.style.display === "" && div.textContent.includes("Sorry, this class is full")
+                || div.textContent.includes("Successfully Booked....")
+                || div.textContent.includes("Successfully deleted booking...")
+                || div.textContent.includes("Updated Successfully...")
+                || div.textContent.includes("You have already booked this class....")) {
+                div.style.display = "block";
+            }
+            else if (div.textContent.includes("")) {
+                div.style.display = "none";
+            }
+        });
+    </script>
+</header>
+
+<div id="alert_wrapf" class="alert_wrapf" th:text="${message}"></div>
+
+<section id="trainee-class-section" class="fwh-slide">
+    <h1 class="centerCla">CLASSES</h1>
+    <div class="center">
+
+        <h2>View Classes</h2>
+        <br>
+
+        <div>
+        <div>
+            <form th:action="@{/trainee/filter_search}"
+                  method="post">
+            <div class="filter_class">
+                <label class="input_search_1_" for="style">Training Style</label>
+                <select class="input_search_1" name="style" id="style">
+                    <option value="Boot Camp">Boot Camp</option>
+                    <option value="Motivational">Motivational</option>
+                </select>
+
+                <label class="input_search_2_" for="activity">Training Activity</label>
+                    <select class="input_search_2" id="activity" name="activity">
+                        <option th:each="activity: ${listActivities}" th:text="${activity.activityName}" th:value="${activity.activityName}"></option>
+                    </select>
+
+                <label class="input_search_3_" for="classtype">Class Type</label>
+                <select class="input_search_3" name="classtype" id="classtype">
+                    <option value="Individual">Individual</option>
+                    <option value="Group">Group</option>
+                </select>
+
+            </div>
+                <button class="btn5" type="submit">Filter</button>
+            </form>
+        </div>
+
+            <form th:action="@{/trainee/refresh_table}"
+                  class="refresh_table">
+                <div>
+                    <button type="submit" class="back_button" style='font-size:18px'><i class="fa fa-refresh"></i></button>
+                </div>
+            </form>
+
+            <div class="table-responsive-xl">
+            <table id="trainee_classes_table" class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Class Name</th>
+                    <th>Trainer Name</th>
+                    <th>Class Activity</th>
+                    <th>Description</th>
+                    <th>Class Type</th>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>No. Of Spots Left</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="classes: ${listClasses}">
+                    <td th:text="${classes.className}">Class Name</td>
+                    <td th:text="${classes.trainerName}">Trainer Name</td>
+                    <td th:text="${classes.classActivity}">Class Activity</td>
+                    <td th:text="${classes.description}">Description</td>
+                    <td th:text="${classes.classType}">Class Type</td>
+                    <td th:text="${classes.date}">Date</td>
+                    <td th:text="${classes.startTime}">Start Time</td>
+                    <td th:text="${classes.endTime}">End Time</td>
+                    <td th:text="${classes.numberOfSpots}">No. Of Spots Left</td>
+                    <td> <button type="button" class="btn btn-info" data-toggle="modal"  data-target="#editModal" th:attrappend="data-target=${classes.id}" >Book</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            <script src="https://code.jquery.com/jquery-3.5.1.js" ></script>
+            <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" ></script>
+            <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js" ></script>
+
+            <script>
+
+                $(document).ready(function () {
+                    $('#trainee_classes_table').DataTable({
+                        //pagingtype simple
+                        searching: false,
+
+                        "lengthChange": false
+                    });
+                });
+
+            </script>
+
+            <script>
+                $(document).ready(function() {
+                    $('editModal').modal('show');
+                    var userid = $(this).data('id');
+                });
+            </script>
+
+            <div th:each="classes: ${listClasses}" th:attrappend="id=${classes.id}" class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Book A Class</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/trainee/addBooking}" th:object="${trainee}" method="post">
+
+                                <div class="form-group">
+                                    <label for="className">Class Name:</label>
+                                    <input type="text" class="form-control" id="className" name="className" th:value="${classes.className}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="classActivity">Class Activity:</label>
+                                    <input type="text" class="form-control" id="classActivity" name="classActivity" th:value="${classes.classActivity}" readonly>
+                                </div>
+                                <div hidden="hidden" class="form-group">
+                                    <label for="trainerId">Trainer ID</label>
+                                    <input type="text" class="form-control" id="trainerId" name="trainerId" th:value="${classes.trainerId}" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="trainerName">Trainer Name</label>
+                                    <input type="text" class="form-control" id="trainerName" name="trainerName" th:value="${classes.trainerName}" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="traineeName">Trainee Name</label>
+                                    <input type="text" class="form-control" id="traineeName" name="traineeName" th:value="${fullname}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="date">Date</label>
+                                    <input type="text" class="form-control" id="date" name="date" th:value="${classes.date}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="startTime">Start Time</label>
+                                    <input type="text" class="form-control" id="startTime" name="startTime" th:value="${classes.startTime}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="endTime">End Time</label>
+                                    <input type="text" class="form-control" id="endTime" name="endTime" th:value="${classes.endTime}" readonly>
+                                </div>
+
+                                <button type="submit" class="btn btn-success">Book Class</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+<section id="trainer-class-section" class="fwh-slide fwh-slide--bg-blue">
+    <div>
+        <h1 class="centerCla">Trainers</h1>
+    </div>
+    <div class="center">
+
+        <div>
+            <div class="table-responsive-xl">
+            <table id="trainee_trainer_table" class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                <tr>
+                    <th>E-mail</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user: ${listTrainer}">
+                    <td th:text="${user.email}">E-mail</td>
+                    <td th:text="${user.firstName}">First Name</td>
+                    <td th:text="${user.lastName}">Last Name</td>
+                    <td> <button  type="button" class="btn btn-info" data-toggle="modal"  data-target="#modalShowTrainer" th:attrappend="data-target=${user.id}"  >Show More</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            </div>
+            <script src="https://code.jquery.com/jquery-3.5.1.js" ></script>
+            <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" ></script>
+            <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js" ></script>
+
+            <script>
+
+                $(document).ready(function () {
+                    $('#trainee_trainer_table').DataTable();
+                });
+
+            </script>
+
+            <script>
+                $(document).ready(function() {
+                    $('modalShowTrainer').modal('show');
+                    var userid = $(this).data('id');
+                });
+            </script>
+
+            <div th:each="user: ${listTrainer}" th:attrappend="id=${user.id}" class="modal fade" id="modalShowTrainer" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabelTrainer">Trainer Info</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="emailTrainer">E-mail</label>
+                                    <input type="text" class="form-control" id="emailTrainer" name="email" th:value="${user.email}" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstNameTrainer">First Name</label>
+                                    <input type="text" class="form-control" id="firstNameTrainer" name="firstName" th:value="${user.firstName}" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastNameTrainer">Last Name</label>
+                                    <input type="text" class="form-control" id="lastNameTrainer" name="lastName" th:value="${user.lastName}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="genderTrainer">Gender</label>
+                                    <input type="text" class="form-control" id="genderTrainer" name="gender" th:value="${user.gender}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phoneNumberTrainer">Phone</label>
+                                    <input type="text" class="form-control" id="phoneNumberTrainer" name="phoneNumber" th:value="${user.phoneNumber}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="trainingStyleTrainer">Training Style</label>
+                                    <input type="text" class="form-control" id="trainingStyleTrainer" name="trainingStyle" th:value="${user.trainingStyle}" readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="trainingActivityTrainer">Training Activity</label>
+                                    <input type="text" class="form-control" id="trainingActivityTrainer" name="trainingActivity" th:value="${user.trainingActivity}" readonly>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="bookclass-class-section" class="fwh-slide fwh-slide--bg-red">
+    <div>
+        <h1 class="centerCla">My Bookings</h1>
+    </div>
+    <div class="center">
+
+        <div>
+            <div class="table-responsive-xl">
+            <table id="trainee_bookings_table" class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Class Name</th>
+                    <th>Class Activity</th>
+                    <th>Trainer Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="book: ${listBookings}">
+                    <td th:text="${book.className}">Class Name</td>
+                    <td th:text="${book.classActivity}">Class Activity</td>
+                    <td th:text="${book.trainerName}">Trainer Name</td>
+                    <td th:text="${book.date}">Date</td>
+                    <td th:text="${book.time}">Time</td>
+                    <td> <button  type="button" class="btn btn-info" data-toggle="modal"  data-target="#modalCancelBooking" th:attrappend="data-target=${book.id}" >Cancel Booking</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            </div>
+            <script src="https://code.jquery.com/jquery-3.5.1.js" ></script>
+            <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js" ></script>
+            <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js" ></script>
+
+            <script>
+
+                $(document).ready(function () {
+                    $('#trainee_bookings_table').DataTable();
+                });
+
+            </script>
+
+            <script>
+                $(document).ready(function() {
+                    $('modalCancelBooking').modal('show');
+                    var userid = $(this).data('id');
+                });
+            </script>
+
+            <div th:each="book: ${listBookings}" th:attrappend="id=${book.id}" class="modal fade" id="modalCancelBooking" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabelCancel">Cancel Booking?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/trainee/deleteBooking}" >
+
+                                <div hidden="hidden" class="form-group">
+                                    <label for="idTrainer">User ID</label>
+                                    <input type="text" class="form-control" id="idTrainer" name="id" th:value="${book.id}" readonly>
+                                </div>
+
+                                <div hidden="hidden" class="form-group">
+                                    <label for="idClass">Classes ID</label>
+                                    <input type="text" class="form-control" id="idClass" name="class_id" th:value="${book.classId}" readonly>
+                                </div>
+
+                                <div hidden="hidden" class="form-group">
+                                    <label for="classNames">User ID</label>
+                                    <input type="text" class="form-control" id="classNames" name="className" th:value="${book.className}" readonly>
+                                </div>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger">Yes</button>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+</body>
+</html>

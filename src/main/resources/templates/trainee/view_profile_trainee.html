@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>View Profile</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/style2.css}"/>
+
+    <link href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap4.min.css" rel="stylesheet">
+
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+
+    <link rel="icon" type="image/ico" th:href="@{../../static/zingymfavicon.ico}">
+
+    <style >
+        body{
+            background-image: url(/images/wallpaper.jpg);
+            background-size: cover;
+            margin: 0;
+        }
+        span {
+            color: #060c3b;
+            display: inline-block;
+            width: 200px;
+            text-align: left;
+        }
+
+        .profilePage{
+            background-color: #3d3d3d;
+            width: 20%;
+            color: #dee2e6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 50px auto 0;
+            position: center;
+        }
+
+        .profileFormButton{
+            position: center;
+        }
+
+        .text-center{
+            text-align: center;
+            padding-top: 10px;
+            color: #EC5800;
+            font-style: normal;
+        }
+
+        .modal-title {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <h2 class="text-center">My Profile</h2>
+
+    <div class="left">
+
+            <button onclick="history.back()" class="back_button" style='font-size:18px'><i class='far fa-arrow-alt-circle-left'></i></button>
+
+    </div>
+
+
+  <div class="profilePage" th:each="trainer: ${trainee}"  >
+      <form th:action="@{/trainee/traineeProfileEdit}">
+
+          <div hidden="hidden" class="form-group">
+              <label for="id">E-mail</label>
+              <input type="text" class="form-control" id="id" name="id" th:value="${trainee.id}" readonly>
+          </div>
+          <div class="form-group">
+              <label for="emailTrainer">E-mail</label>
+              <input type="text" class="form-control" id="emailTrainer" name="email" th:value="${trainee.email}" readonly>
+          </div>
+          <div class="form-group">
+              <label for="firstNameTrainer">First Name</label>
+              <input type="text" class="form-control" id="firstNameTrainer" name="firstName" th:value="${trainee.firstName}" readonly>
+          </div>
+          <div class="form-group">
+              <label for="lastNameTrainer">Last Name</label>
+              <input type="text" class="form-control" id="lastNameTrainer" name="lastName" th:value="${trainee.lastName}" readonly>
+          </div>
+
+          <div class="form-group">
+              <label for="genderTrainer">Gender</label>
+              <input type="text" class="form-control" id="genderTrainer" name="gender" th:value="${trainee.gender}" readonly>
+          </div>
+
+          <div class="form-group">
+              <label for="phoneNumberTrainer">Phone</label>
+              <input type="text" class="form-control" id="phoneNumberTrainer" name="phoneNumber" th:value="${trainee.phoneNumber}" readonly>
+          </div>
+
+          <div class="form-group">
+              <label for="trainingStyleTrainer">Training Style</label>
+              <input type="text" class="form-control" id="trainingStyleTrainer" name="trainingStyle" th:value="${trainee.trainingStyle}" readonly>
+          </div>
+
+          <div class="form-group">
+              <label for="trainingActivityTrainer">Training Activity</label>
+              <input type="text" class="form-control" id="trainingActivityTrainer" name="trainingActivity" th:value="${trainee.trainingActivity}" readonly>
+          </div>
+
+      </form>
+      <div class="profileFormButton">
+          <button type="button" class="btn btn-primary" data-toggle="modal"  data-target="#modalEditUser" th:attrappend="data-target=${trainee.id}">Edit</button>
+          <button type="button" class="btn btn-danger" data-toggle="modal"  data-target="#modalDeleteUser">Delete Profile</button>
+      </div>
+
+      <script>
+          $(document).ready(function() {
+              $('modalDeleteUser').modal('show');
+              var userid = $(this).data('id');
+          });
+      </script>
+
+      <div class="modal fade" id="modalDeleteUser" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="editModalLabelStatusDeleteUser">Delete Profile?</h5>
+                  </div>
+                  <div class="modal-body">
+                      <form th:action="@{/trainee/deleteProfileTrainee}" >
+                          <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+
+      <script>
+          $(document).ready(function() {
+              $('modalEditUser').modal('show');
+              var userid = $(this).data('id');
+          });
+      </script>
+
+      <div th:each="user: ${trainee}" th:attrappend="id=${trainee.id}" class="modal fade" id="modalEditUser" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="editModalLabelStatusEditUser">Save Update?</h5>
+                  </div>
+                  <div class="modal-body">
+                      <form th:action="@{/trainee/saveTraineeEdit}" th:object="${trainee}"  method="post">
+
+                          <div hidden="hidden" class="form-group">
+                              <label for="id24">ID</label>
+                              <input type="text" class="form-control" id="id24" name="id" th:value="${trainee.id}" readonly>
+                          </div>
+
+                          <div  class="form-group">
+                              <label for="emailTraineee4">E-mail</label>
+                              <input type="text" class="form-control" id="emailTraineee4" name="email" th:value="${trainee.email}" readonly>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="passwordd4">Password</label>
+                              <input type="text" class="form-control" id="passwordd4" name="password" th:value="${trainee.password}">
+                          </div>
+
+                          <div class="form-group">
+                              <label for="firstNameTraineee4">First Name</label>
+                              <input type="text" class="form-control" id="firstNameTraineee4" name="firstName" th:value="${trainee.firstName}">
+                          </div>
+                          <div class="form-group">
+                              <label for="lastNameTraineee4">Last Name</label>
+                              <input type="text" class="form-control" id="lastNameTraineee4" name="lastName" th:value="${trainee.lastName}">
+                          </div>
+                          <div class="form-group">
+                              <label for="genderTraineee4">Gender</label>
+                              <input type="text" class="form-control" id="genderTraineee4" name="gender" th:value="${trainee.gender}" readonly>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="phoneNumberTraineee4">Phone</label>
+                              <input type="text" class="form-control" id="phoneNumberTraineee4" name="phoneNumber" th:value="${trainee.phoneNumber}">
+                          </div>
+
+                          <div class="checkboxes">
+                              <label >Experience Level: </label>
+                              <div>
+                                  <input type="radio" id="y11" name="trainingStyle" th:field="*{experienceLevel}" value="Novice">
+                                  <label for="y11">Novice</label><br>
+                                  <input type="radio" id="y21" name="trainingStyle" th:field="*{experienceLevel}" value="Intermediate">
+                                  <label for="y21">Intermediate</label><br>
+                                  <input type="radio" id="y23" name="trainingStyle" th:field="*{experienceLevel}" value="Advanced">
+                                  <label for="y23">Advanced</label><br>
+                              </div>
+                          </div>
+
+                          <div class="checkboxes">
+                              <label >Preferred Training Styles: </label>
+                              <div>
+                                  <input type="checkbox" id="y1" name="trainingStyle" th:field="*{trainingStyle}" value="Boot Camp">
+                                  <label for="y1">Boot Camp</label><br>
+                                  <input type="checkbox" id="y2" name="trainingStyle" th:field="*{trainingStyle}" value="Motivational">
+                                  <label for="y2">Motivational</label><br>
+                              </div>
+                          </div>
+
+                          <div class="checkboxes">
+                              <label>Preferred Training Activities<br>
+                                  <input  type="checkbox" name="trainingActivity"
+                                          th:each="activity : ${listActivities}"
+                                          th:text="${activity.activityName}"
+                                          th:value="${activity.activityName}"
+                                          th:field="*{trainingActivity}"/>
+                              </label>
+                          </div>
+                          <button type="button" data-dismiss="modal" class="btn btn-primary">Cancel</button>
+                          <button type="submit" class="btn btn-success">Update</button>
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+  </div>
+
+</div>
+</body>
+</html>

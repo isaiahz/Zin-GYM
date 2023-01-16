@@ -1,0 +1,259 @@
+* {
+  font-family: "Baloo Bhai 2", cursive;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-image: url(../images/wallpaper.jpg);
+  background-size: cover;
+}
+
+.alert_wr {
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  display: block;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+  opacity: 0;
+  grid-row-start: 2;
+  animation: alert 4s linear none;
+  transition: all .3s ease-in-out;
+
+}
+
+
+@keyframes alert {
+  0%, 100% {
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+}
+
+.left {
+  display: inline-block;
+  text-align: center;
+  margin: 10px;
+
+  top: 12px;
+  z-index: 1;
+  position: fixed;
+}
+
+.dsx {
+  color: #060c3b;
+}
+
+.center{
+  margin-left: 300px;
+  margin-right: 300px;
+}
+
+.centerCla{
+  text-align: center;
+}
+
+.table {
+  background-color: #EC5800;
+}
+
+.dataTables_length {
+  color: #EC5800;
+}
+
+.dataTables_info {
+  color: #EC5800;
+}
+
+.dataTables_filter {
+  color: #EC5800;
+}
+
+
+.table-striped tr:nth-child(even) {
+  background-color: #18252DFF;
+}
+
+
+
+.table-striped th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+
+
+
+
+#jui {
+  color: aliceblue;
+}
+
+#member-class-section {
+  background-image: url("../images/wallpaper.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+}
+
+.left p {
+  color: white;
+  font-size: 20px;
+}
+
+.left img {
+  width: 175px;
+  filter: invert(100%);
+}
+
+.mid {
+  text-align: center;
+  display: block;
+  width: 36%;
+  margin: auto;
+}
+
+#divNav {
+  background-color: blueviolet;
+  margin: 20px 0;
+}
+
+.right {
+  display: inline;
+  right: 8px;
+  margin: 5px;
+  top: -10px;
+  z-index: 1;
+  position: fixed;
+}
+
+.dfg {
+  background-color: #EC5800;
+}
+
+.rey {
+  display: inline;
+  position: absolute;
+  top: 8px;
+  right: 530px;
+  margin: 5px;
+}
+
+.navbar {
+  margin: 20px 0;
+
+}
+
+.navbar li {
+  border-radius: 10px;
+  font-size: 30px;
+  display: inline-table;
+  padding: 0px 12px;
+  margin: 7px;
+
+}
+
+.navbar li a {
+  color: white;
+  text-decoration: none;
+  top: 10px;
+  z-index: 1;
+  position: fixed;
+}
+
+.navbar li a:hover,
+.navbar li a.active {
+  color: #EC5800;
+  cursor: pointer;
+}
+
+
+.btn {
+  color: white;
+  background-color: #EC5800;
+  font-size: 17px;
+  margin: 17px 10px;
+  padding: 2px 14px;
+  border-radius: 10px;
+}
+
+.btn:hover {
+  cursor: pointer;
+  color: black;
+}
+
+.container {
+  font-size: 40px;
+  margin: 80px 90px 0 90px;
+  padding: 10px 30px 0 30px;
+}
+
+h1 {
+  font-size: 70px;
+  color: white;
+}
+
+
+h2 {
+  color: white;
+}
+
+.form-group input {
+  font-size: 22px;
+  height: 35px;
+  width: 370px;
+  border-radius: 5px;
+  padding: 0 10px;
+}
+
+.form-group ::placeholder {
+  font-size: 22px;
+}
+
+.memberLogin {
+position:relative;
+
+  left:145px;
+}
+
+.trainerLoginText{
+  color: #EC5800;
+  font-size: 30px;
+}
+
+.btn1 {
+  color: white;
+  display: block;
+  width: 34%;
+  height: 50px;
+  background-color: #EC5800;
+  font-size: 17px;
+
+  padding: 0px 40px;
+  border-radius: 10px;
+}
+
+.btn1:hover {
+  cursor: pointer;
+  color: black;
+}
+
+.trainersign {
+  font-size: 25px;
+  color: #EC5800;
+}
