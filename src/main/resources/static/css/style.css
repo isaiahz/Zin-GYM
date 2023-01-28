@@ -180,11 +180,18 @@ body {
 
 .btn {
   color: white;
-  background-color: #EC5800;
+  background: none;
   font-size: 17px;
   margin: 17px 10px;
   padding: 2px 14px;
-  border-radius: 10px;
+  border-radius: 30px;
+  border: 2px solid #EC5800;
+  transition: all 0.3s ease;
+}
+
+.btn:hover{
+  color: white;
+  cursor: pointer;
 }
 
 .login_word {
@@ -198,10 +205,6 @@ body {
   color: #dee2e6;
 }
 
-.btn:hover {
-  cursor: pointer;
-  color: black;
-}
 
 .underline {
   color: #dee2e6;
